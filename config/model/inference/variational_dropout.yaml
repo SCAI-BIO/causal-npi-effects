@@ -1,0 +1,3 @@
+inference: variational_dropout
+inference_config:
+  n_samples: 100

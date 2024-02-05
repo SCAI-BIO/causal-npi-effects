@@ -1,0 +1,11 @@
+batch_size: 256
+br_size: 128
+dropout: 0.08054871344623514
+fc_hidden_size: 128
+input_dropout: 0.17759628404961308
+l1_lambda: 1.5492700792026335e-05
+l2_lambda: 1.3888209345427003e-05
+learning_rate: 0.0008349098642325936
+seq_hidden_size: 128
+seq_num_layers: 1
+window_size: 21

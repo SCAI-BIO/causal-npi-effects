@@ -1,0 +1,3 @@
+PlaceboTreatmentRefuter:
+  placebo_type: "cyclic" # "permute"
+  num_simulations: 100

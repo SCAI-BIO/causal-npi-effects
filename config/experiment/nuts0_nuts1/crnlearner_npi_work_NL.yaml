@@ -1,0 +1,61 @@
+# @package _global_
+defaults:
+  - /model/causal_model/model_config: crnlearner_NL_nuts0_nuts1
+  - override /model/causal_model: crnlearner
+  - override /model/inference: variational_dropout
+  - override /refutation:
+    - propensity_thresholding_test
+    - placebo_treatment_refutation
+    - random_common_cause_refutation
+    - data_subset_refutation
+
+general:
+  experiment_name: nuts0_nuts1/NL
+  input_data: ./data/data.csv
+  out_dir_base: ./results
+  substeps: 
+    - fit_causal_model
+    - evaluate_causal_model
+    - refutation
+    #- shap_analysis
+data:
+  treatment: npi_work
+  treatment_levels: 2
+  outcome: r_number
+  outcome_lag: 7
+  time_predictors: 
+    - r_number
+    - mob_transit
+    - weather_iptcc
+    - weather_mean_temperature
+    - weather_humidity
+    - weather_precipitation
+    - pollution_o3
+    - pollution_no2
+    - pollution_pm10
+    - covid_tests
+    - covid_mask_use
+    - covid_vacc_policy
+    - npi_stay_home
+    - npi_schools
+    - npi_internal_travel
+    - npi_international_travel
+  static_real_predictors:
+    - pop_density
+    - pop_age_median
+    - socioeco_gdp
+    - mob_commuting_for
+    - mob_commuting_outr
+    - socioeco_physicians
+    - socioeco_broadband
+   # - socioeco_beds # not available for NL
+  countries: 
+    - NL
+  period_fit: 
+    - 2020-49 # start later because not imposed in first wave
+    - 2022-22
+  period_eval:
+    - 2022-22
+    - 2022-35
+  validation_start: 2022-17
+  window_size: ${model.causal_model.model_config.window_size}

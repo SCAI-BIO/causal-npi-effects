@@ -1,0 +1,3 @@
+DataSubsetRefuter:
+  subset_fraction: 0.8
+  num_simulations: 100

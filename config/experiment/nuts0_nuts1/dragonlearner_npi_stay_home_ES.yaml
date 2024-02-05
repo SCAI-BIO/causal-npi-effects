@@ -1,0 +1,61 @@
+# @package _global_
+defaults:
+  - /model/causal_model/model_config: dragonlearner_ES_nuts0_nuts1
+  - override /model/causal_model: dragonlearner
+  - override /model/inference: variational_dropout
+  - override /refutation:
+    - propensity_thresholding_test
+    - placebo_treatment_refutation
+    - random_common_cause_refutation
+    - data_subset_refutation
+
+general:
+  experiment_name: nuts0_nuts1/ES
+  input_data: ./data/data.csv
+  out_dir_base: ./results
+  substeps: 
+    - fit_causal_model
+    - evaluate_causal_model
+    - refutation
+    #- shap_analysis
+data:
+  treatment: npi_stay_home
+  treatment_levels: 2
+  outcome: r_number
+  outcome_lag: 7
+  time_predictors: 
+    - r_number
+    - mob_transit
+    - weather_iptcc
+    - weather_mean_temperature
+    - weather_humidity
+    - weather_precipitation
+    - pollution_o3
+    - pollution_no2
+    - pollution_pm10
+    - covid_tests
+    - covid_mask_use
+    - covid_vacc_policy
+    - npi_schools
+    - npi_work
+    - npi_internal_travel
+    - npi_international_travel
+  static_real_predictors:
+    - pop_density
+    - pop_age_median
+    - socioeco_gdp
+    - mob_commuting_for
+    - mob_commuting_outr
+    - socioeco_beds
+    - socioeco_physicians
+    - socioeco_broadband
+  countries: 
+    - ES
+  period_fit: 
+    - 2020-7
+    - 2021-51
+  period_eval:
+    - 2021-51
+    - 2022-12
+  validation_start: 2021-47
+  window_size: ${model.causal_model.model_config.window_size}

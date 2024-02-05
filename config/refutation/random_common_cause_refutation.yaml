@@ -1,0 +1,3 @@
+RandomCommonCauseRefuter:
+  random_common_cause_type: "random walk" # "random"
+  num_simulations: 100

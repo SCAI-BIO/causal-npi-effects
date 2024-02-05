@@ -1,0 +1,4 @@
+inference: time_series_bootstrap
+inference_config:
+  n_samples: 100
+  n_jobs: -1

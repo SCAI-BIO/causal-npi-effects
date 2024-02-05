@@ -1,0 +1,54 @@
+defaults:
+  - _self_
+  - model/causal_model: crnlearner
+  - model/inference: variational_dropout
+  - refutation:
+    - placebo_treatment_refutation
+    - random_common_cause_refutation
+    - data_subset_refutation
+    - propensity_thresholding_test
+
+general:
+  experiment_name: ???
+  input_data: ???
+  out_dir_base: ???
+  out_dir: ${general.out_dir_base}/${general.experiment_name}/${model.causal_model.model_class}_${data.treatment}_${data.outcome}${data.outcome_lag}
+  substeps: [fit_causal_model, evaluate_causal_model, refutation]
+  deactivate_plotting: False
+
+data:
+  geo_id: geo
+  time_id: date
+  treatment: ???
+  treatment_levels: 2
+  outcome: ???
+  outcome_lag: 7
+  window_size: 7
+  time_predictors: ???
+  static_real_predictors: []
+  countries: ???
+  regions: null
+  period_fit: ???
+  period_eval: ???
+  validation_start: null # if set, one validation split will be performed
+
+model: 
+  causal_model: 
+    model_class: ??? # will be set with +model.causal_model=...
+    model_config:
+      treatment: ${data.treatment}
+      outcome: ${data.outcome}
+      pickle_model: True
+      pickle_inference: True
+  inference: ??? # will be set with +model.inference=...
+
+refutation: # will be filled by +refutation=...
+
+shap:
+  defined_periods: null
+  interaction_variable: null
+  subsample_frac: null
+
+hydra:
+  run:
+    dir: ${general.out_dir}/.logs/${now:%Y-%m-%d_%H-%M-%S}
