@@ -243,109 +243,6 @@ def plot_cate(
     plt.close()
 
 
-def plot_residuals_over_time(
-    target: pd.DataFrame,
-    residuals: pd.DataFrame,
-    region: str,
-    save_to: str,
-    fold_numbers: Optional[pd.Series] = None,
-) -> None:
-    """
-    A method to plot residuals from first stage of double/debiased methods.
-    TODO: EXCLUDE for published version (applicable only to DML)
-    """
-    colours = ["steelblue", "darkseagreen", "indianred", "gold", "darkorchid"]
-    for t in target.columns:
-        fig = plt.figure(figsize=(16, 9))
-        t_str = "".join(map(str, t))
-        plt.plot(target.index, target[t], color="black")
-        plt.title("Residuals from the prediction of {} in {}".format(t_str, region))
-        if fold_numbers is not None:
-            for i in range(fold_numbers.max() + 1):
-                plt.bar(
-                    residuals[fold_numbers == i].index,
-                    residuals[fold_numbers == i][t],
-                    width=0.01,
-                    ec=colours[i % len(colours)],
-                )
-        else:
-            plt.bar(residuals.index, residuals[t], width=0.01, ec=colours[0])
-        plt.savefig(
-            "{}/residuals_{}_{}.png".format(save_to, "".join(map(str, t)), region)
-        )
-        plt.close()
-
-
-def plot_window_predictions_over_time(
-    target: pd.Series,
-    predictions: List[pd.DataFrame],
-    region: str,
-    level: int,
-    save_to: str,
-    predictions_counterfactual: Optional[List[pd.DataFrame]] = None,
-) -> None:
-    """
-    A method to plot windowed predictions over time.
-    TODO: EXCLUDE in published version (applicable only to causal estimation through time)
-    """
-    colours = ["steelblue", "darkseagreen", "indianred", "gold", "darkorchid"]
-
-    plt.figure(figsize=(26, 7))
-    plt.plot(target.loc[region].index, target.loc[region], c="black", linestyle="-")
-
-    # observed
-    for i, pred in enumerate(predictions):
-        if pred.empty:
-            continue
-        fold_pred = pred.loc[region]
-
-        for t in range(fold_pred.shape[0]):
-            if fold_pred.shape[1] > 1:
-                # window predictions
-                plt.plot(
-                    [
-                        fold_pred.iloc[t].name + pd.DateOffset(i)
-                        for i in range(1, fold_pred.shape[1] + 1)
-                    ],
-                    fold_pred.iloc[t],
-                    c=colours[i % len(colours)],
-                    alpha=1.0,
-                )
-            else:
-                # categorical
-                plt.scatter(
-                    fold_pred.iloc[t].name,
-                    fold_pred.iloc[t],
-                    c=colours[i % len(colours)],
-                    alpha=1.0,
-                )
-
-    # counterfactual
-    if predictions_counterfactual is not None:
-        for i, pred in enumerate(predictions_counterfactual):
-            if pred.empty:
-                continue
-            fold_pred = pred.loc[region]
-
-            for t in range(fold_pred.shape[0]):
-                if fold_pred.shape[1] > 1:
-                    plt.plot(
-                        [
-                            fold_pred.iloc[t].name + pd.DateOffset(i)
-                            for i in range(1, fold_pred.shape[1] + 1)
-                        ],
-                        fold_pred.iloc[t],
-                        c=colours[i % len(colours)],
-                        alpha=0.3,
-                        linestyle="--",
-                    )
-
-    plt.savefig(
-        "{}/window_predictions_level{}_{}.png".format(save_to, str(level), region)
-    )
-    plt.close()
-
-
 def plot_refutation_results(
     effect_intervals: Dict,
     ref_test: str,
@@ -485,11 +382,13 @@ def plot_shap(
             plt.scatter(
                 shap_values.data[:, i],
                 shap_values.values[:, i],
-                c=shap_values.data[
-                    :, shap_values.feature_names.index(interaction_variable)
-                ]
-                if interaction_variable is not None
-                else colors[ii],
+                c=(
+                    shap_values.data[
+                        :, shap_values.feature_names.index(interaction_variable)
+                    ]
+                    if interaction_variable is not None
+                    else colors[ii]
+                ),
                 cmap=red_blue,
                 alpha=0.8,
             )
