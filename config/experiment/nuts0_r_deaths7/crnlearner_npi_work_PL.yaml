@@ -1,0 +1,66 @@
+# @package _global_
+defaults:
+  - /model/causal_model/model_config: crnlearner_PL_nuts0
+  - override /model/causal_model: crnlearner
+  - override /model/inference: variational_dropout
+  - override /refutation:
+    - propensity_thresholding_test
+    - placebo_treatment_refutation
+    - random_common_cause_refutation
+    - data_subset_refutation
+
+general:
+  experiment_name: nuts0_r_deaths7/PL
+  input_data: ./data/data.csv
+  out_dir_base: ./results
+  substeps: 
+    - fit_causal_model
+    - evaluate_causal_model
+    - refutation
+    #- shap_analysis
+data:
+  treatment: npi_work
+  treatment_levels: 2
+  outcome: r_deaths
+  outcome_lag: 7
+  time_predictors: 
+    - r_deaths
+    - mob_transit
+    - weather_iptcc
+    - weather_mean_temperature
+    - weather_humidity
+    - weather_precipitation
+    - pollution_o3
+    - pollution_no2
+    - pollution_pm10
+    - covid_tests
+    - covid_mask_use
+    - covid_vacc_policy
+    - npi_stay_home
+    - npi_schools
+    - npi_internal_travel
+    - npi_international_travel
+  countries: 
+    - PL
+  regions:
+    - PL
+  period_fit: 
+    - 2020-49 # start later because not imposed in first wave
+    - 2021-39
+  period_eval:
+    - 2021-39
+    - 2021-52
+  validation_start: 2021-34
+  window_size: ${model.causal_model.model_config.window_size}
+model: # set baselearners to null for CRN
+  y_models:
+    model_class: null
+  t_models:
+    model_class: null
+  cate_models:
+    model_class: null
+# shap:
+#   defined_periods:
+    # - [2020-12,2020-22]
+    # - [2020-40,2021-08]
+    # - [2022-04,2022-34]
