@@ -15,9 +15,9 @@ general:
   out_dir_base: ./results
   substeps: 
     - fit_causal_model
-    #- evaluate_causal_model
-    #- refutation
-    - shap_analysis
+    - evaluate_causal_model
+    - refutation
+    #- shap_analysis
 data:
   treatment: npi_schools
   treatment_levels: 2

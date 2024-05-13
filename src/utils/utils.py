@@ -391,4 +391,5 @@ def create_windowed_dataframe(
 
         X_df = pd.concat([X_df, X_concat])
 
-    return X_df, Y_df, T_df
+    # drop windows for which treatment is negative (defined as missing)
+    return X_df.loc[T_df.squeeze()>=0], Y_df.loc[T_df.squeeze()>=0], T_df.loc[T_df.squeeze()>=0]
