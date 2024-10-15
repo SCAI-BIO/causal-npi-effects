@@ -2,7 +2,7 @@
 Code accompanying what is to be a research paper by Jannis Guski, Jonas Botz and Prof. Dr. Holger Fröhlich. If you have any questions regarding the code or paper, please feel free to get in touch (jannis.guski@scai.fraunhofer.de).
 
 ## Setup
-Navigate to cloned repository and call `conda env create -f causal-npi-effects.yml` to generate conda environment, followed by `conda activate causal-npi-effects` to activate it.
+Navigate to cloned repository and call `mamba env create -f causal-npi-effects.yml` to generate mamba environment, followed by `mamba activate causal-npi-effects` to activate it. 
 
 ## Run
 Configuration parsing is based on `hydra`, and folder `./config/` provides configuration objects. The input data can be found in `./data/`.
