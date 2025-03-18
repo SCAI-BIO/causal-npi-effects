@@ -1,5 +1,5 @@
 # Estimating the causal impact of non-pharmaceutical interventions on COVID-19 spread in seven EU countries via machine learning
-Code accompanying what is to be a research paper by Jannis Guski, Jonas Botz and Prof. Dr. Holger Fröhlich. If you have any questions regarding the code or paper, please feel free to get in touch (jannis.guski@scai.fraunhofer.de).
+Code accompanying a [research paper in Scientific Reports](https://www.nature.com/articles/s41598-025-88433-2) by Jannis Guski, Jonas Botz and Prof. Dr. Holger Fröhlich. If you have any questions regarding the code or paper, please feel free to get in touch (jannis.guski@scai.fraunhofer.de).
 
 ## Setup
 Navigate to cloned repository and call `mamba env create -f causal-npi-effects.yml` to generate mamba environment, followed by `mamba activate causal-npi-effects` to activate it. 
